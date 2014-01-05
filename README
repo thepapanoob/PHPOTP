@@ -26,6 +26,17 @@ case a mobile app acting as a security token).  Authentication that
 combines "something you know" and "something you have" brings
 additional security.
 
+** Compatability **
+
+Any standards complient HOTP/TOTP application should work.
+
+RedHat's FreeOTP works well and is Apache 2.0 licensed.
+https://play.google.com/store/apps/details?id=org.fedorahosted.freeotp
+
+Google's Google Authenticator works well and is nicely polished, but
+supports only SHA1 with 6 digits and a 30-second window.
+https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2
+
 ** Usage **
 
 On the server:
@@ -48,9 +59,6 @@ their token.  The server would:
 	$OTP=new PHPOTP();
 	$Seed=GetSeedFromSomewhereSafe();
 	$CurrValue=$OTP->TOTP($Seed);
-	if ($CurrValue==$_REQUEST['value'])
-		$Success=true;
-	else
-		$Success=false;
+	$Success=($CurrValue==$_REQUEST['value']);
 
 The Seed=GetSeedFromSomewhereSafe() function is left to the reader.
