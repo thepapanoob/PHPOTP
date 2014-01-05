@@ -1,0 +1,56 @@
+** Warning **
+
+While the code provided appears to work in limited cases, it
+probably contains bugs.  It has not been extensively tested,
+particularly outside of the default settings.  See COPYING
+and COPYING.LESSER for disclaimers and such.
+
+If this concerns you, you are encouraged to read the code yourself.
+It is a surprisingly small amount of code, and much of it is
+rather straightforward.
+
+As always, patches are welcome.  Patches must be provided as
+public domain (or whatever your local equivalent is) to prevent
+license entanglement issues.
+
+** Introduction **
+
+Two-factor authentication is becoming an increasingly popular way of
+increasing security.  As an example, Google now supports it's use
+for their user accounts, as well as provides a Google Authenticator
+mobile app.
+
+The term "Two-factor" normally refers to authentication based on a
+password (the first factor) as well as something else (in this
+case a mobile app acting as a security token).  Authentication that
+combines "something you know" and "something you have" brings
+additional security.
+
+** Usage **
+
+On the server:
+
+	$Seed=PHPOTP::GenSeed();
+	StoreSeedSomewhereSafe($Seed);
+
+	$OTP=new PHPOTP();
+	$URI=$OTP->TOTPAsURI('Issuer Name','A Label',Base32::Encode($Seed));
+	echo QREncode($URI);
+
+The StoreSeedSomewhereSafe() and QREncode() functions are left to the reader.
+
+The client would then use the QR code to set up their token, typically a
+mobile app.
+
+To authenticate, the user would provide the value currently provided by
+their token.  The server would:
+
+	$OTP=new PHPOTP();
+	$Seed=GetSeedFromSomewhereSafe();
+	$CurrValue=$OTP->TOTP($Seed);
+	if ($CurrValue==$_REQUEST['value'])
+		$Success=true;
+	else
+		$Success=false;
+
+The Seed=GetSeedFromSomewhereSafe() function is left to the reader.
