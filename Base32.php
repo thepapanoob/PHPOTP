@@ -111,6 +111,31 @@ class Base32 {
 		return $Result;
 	}
 
+	public static function Decode($String,$IgnoreInvalid=true) {
+		$Result='';
+		$Next16Bits=0;
+		$Next16Bitsi=0;
+		$SawPad=false;
+
+		$StrLen=strlen($String);
+		for ($i=0; $i<$StrLen; $i++) {
+			$CharVal=MapCharToFiveBits($String[$i],$IgnoreInvalid);
+			if ($CharVal==self::PAD) {
+				$SawPad=true;
+			} else {
+				if ($SawPad)
+					throw new Exception('Padding encountered before the end of input.');
+				$Next16Bits|=$CharVal>>$Next16Bitsi;
+				$Next16Bitsi+=5;
+				if ($Next16Bitsi>=8) {
+					$Result.=chr($Next16Bits>>8);
+					$Next16Bits=$Next16Bits<<8;
+					$Next16Bitsi-=8;
+				}
+			}
+		}
+	}
+
 	/* The mapping could be done as a lookup table, but
 	 * that is tedious and doesn't do proper range checking.
 	 */
