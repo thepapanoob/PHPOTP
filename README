@@ -1,9 +1,8 @@
 ** Warning **
 
 While the code provided appears to work in limited cases, it
-probably contains bugs.  It has not been extensively tested,
-particularly outside of the default settings.  See COPYING
-and COPYING.LESSER for disclaimers and such.
+probably contains bugs.  See COPYING and COPYING.LESSER for
+disclaimers and such.
 
 If this concerns you, you are encouraged to read the code yourself.
 It is a surprisingly small amount of code, and much of it is

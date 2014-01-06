@@ -86,14 +86,27 @@ class PHPOTP {
 			'&issuer='.rawurlencode($Issuer);
 	}
 
+/*
+	Algorithms other than SHA1 don't seem to work, so this is disabled for now.
+
 	public function SetAlgo($Value) {
 		if (array_search($Value,hash_algos())===FALSE)
 			return false;
 		$this->Algo=$Value;
 		return true;
 	}
+*/
 
-	public static function GenSeed($Length=20) {
+	public function GenSeed($Length=null) {
+		if ($Length===null) {
+			switch ($this->Algo) {
+				case 'md5': $Length=128/8; break;
+				case 'sha1': $Length=160/8; break;
+				case 'sha256': $Length=256/8; break;
+				case 'sha512': $Length=512/8; break;
+				default: $Length=160/8; break;
+			}
+		}
 		$Seed='';
 		mt_srand();
 		for ($i=0; $i<$Length; $i++) {

@@ -4,11 +4,12 @@
 require_once('PHPOTP.php');
 require_once('Base32.php');
 
-$Secret=PHPOTP::GenSeed();
+$OTP=new PHPOTP();
+
+$Secret=$OTP->GenSeed();
 $Base32Secret=Base32::Encode($Secret);
 echo 'Secret (Base32): '.$Base32Secret."\n";
 
-$OTP=new PHPOTP();
 echo 'HOTP: '.$OTP->HOTP($Secret)."\n";
 echo 'TOTP: '.$OTP->TOTP($Secret)."\n";
 
