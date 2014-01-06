@@ -95,16 +95,16 @@ class Base32 {
 					/* No padding */
 					break;
 				case 1:
-					$Result+='======';
+					$Result.='======';
 					break;
 				case 2:
-					$Result+='====';
+					$Result.='====';
 					break;
 				case 3:
-					$Result+='===';
+					$Result.='===';
 					break;
 				case 4:
-					$Result+='=';
+					$Result.='=';
 					break;
 			}
 		}
@@ -120,7 +120,7 @@ class Base32 {
 		$StrLen=strlen($String);
 		for ($i=0; $i<$StrLen; $i++) {
 			$CharVal=self::MapCharToFiveBits($String[$i],$IgnoreInvalid);
-			if ($CharVal==self::PAD) {
+			if ($CharVal===self::PAD) {
 				$SawPad=true;
 			} else {
 				if ($SawPad && !$IgnoreInvalid)
