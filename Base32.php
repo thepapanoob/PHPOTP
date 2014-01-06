@@ -119,21 +119,22 @@ class Base32 {
 
 		$StrLen=strlen($String);
 		for ($i=0; $i<$StrLen; $i++) {
-			$CharVal=MapCharToFiveBits($String[$i],$IgnoreInvalid);
+			$CharVal=self::MapCharToFiveBits($String[$i],$IgnoreInvalid);
 			if ($CharVal==self::PAD) {
 				$SawPad=true;
 			} else {
-				if ($SawPad)
+				if ($SawPad && !$IgnoreInvalid)
 					throw new Exception('Padding encountered before the end of input.');
-				$Next16Bits|=$CharVal>>$Next16Bitsi;
+				$Next16Bits|=$CharVal<<(16-5-$Next16Bitsi);
 				$Next16Bitsi+=5;
 				if ($Next16Bitsi>=8) {
 					$Result.=chr($Next16Bits>>8);
-					$Next16Bits=$Next16Bits<<8;
+					$Next16Bits=0xFF00 & ($Next16Bits<<8);
 					$Next16Bitsi-=8;
 				}
 			}
 		}
+		return $Result;
 	}
 
 	/* The mapping could be done as a lookup table, but
