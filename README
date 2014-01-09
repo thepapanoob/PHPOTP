@@ -40,10 +40,10 @@ https://play.google.com/store/apps/details?id=com.google.android.apps.authentica
 
 On the server:
 
-	$Seed=PHPOTP::GenSeed();
+	$OTP=new PHPOTP();
+	$Seed=$OTP->GenSeed();
 	StoreSeedSomewhereSafe($Seed);
 
-	$OTP=new PHPOTP();
 	$URI=$OTP->TOTPAsURI('Issuer Name','A Label',Base32::Encode($Seed));
 	echo QREncode($URI);
 
