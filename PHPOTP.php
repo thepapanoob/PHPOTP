@@ -110,7 +110,7 @@ class PHPOTP {
 		$Seed='';
 		mt_srand();
 		for ($i=0; $i<$Length; $i++) {
-			$Seed.=chr(mt_rand(0,255));
+			$Seed.=chr(mt_rand(97,122));
 		}
 		return $Seed;
 	}
